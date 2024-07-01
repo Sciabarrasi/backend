@@ -1,13 +1,12 @@
-Casi todas las rutas tienen frontend para interactuar a excepción de:
+Almost all routes have frontend interaction except for:
 
-1. http://localhost:8080/api/productos/:id Método PUT
-2. http://localhost:8080/api/productos/:id Método DELETE
-3. http://localhost:8080/api/carrito/:id Método DELETE
-4. http://localhost:8080/api/carrito/:id/productos/:id_prod Método DELETE
+1. http://localhost:8080/api/productos/:id PUT method
+2. http://localhost:8080/api/productos/:id DELETE method
+3. http://localhost:8080/api/carrito/:id  DELETE method
+4. http://localhost:8080/api/carrito/:id/productos/:id_prod DELETE method
 
-Utilización
-
-1. Método PUT: Body -> Raw en JSON:
+Usage:
+1. PUT method: Body -> Raw in JSON:
    {
    "title": "AAAA",
    "price": "22",
@@ -17,6 +16,6 @@ Utilización
    "stock": "6"
    }
    Send
-2. Método DELETE: Body -> none:
-3. Método DELETE: Body -> none:
-4. Método DELETE: Body -> none:
+2. DELETE method: Body -> none
+3. DELETE method: Body -> none
+4. DELETE method: Body -> none
