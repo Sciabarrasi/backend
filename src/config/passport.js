@@ -1,7 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const Users = require('../models/users');
 const bcrypt = require('bcrypt');
-const mailer = require('./nodemailer');
+const mailer = require('../utils/nodemailer');
 const logger = require('./logger');
 
 module.exports = (passport) => {
@@ -11,11 +11,9 @@ module.exports = (passport) => {
             bcrypt.genSaltSync(10),
             null);
     }
-
     function isValidPassword(user, password) {
         return bcrypt.compareSync(password, user.password);
     }
-
     passport.use('login', new LocalStrategy(
         {
             usernameField: "email",
@@ -65,7 +63,6 @@ module.exports = (passport) => {
                             telefono: '+' + `${req.body.countryCode}` + `${req.body.phone}`,
                             avatar: req.file
                         };
-
                         Users.create(newUser, (err, userWithId) => {
                             if (err) {
                                 logger.error('Error in Saving user: ' + err);
