@@ -1,4 +1,5 @@
-const logger = require('../config/logger');
+import logger from '../config/logger.js';
+
 process.on("message", ({ msg, cant }) => {
     if (msg == "start") {
         const randoms = []
@@ -25,4 +26,4 @@ process.on("message", ({ msg, cant }) => {
         const randomNums = count_duplicate(randoms)
         process.send({ type: "sum", data: randomNums });
     }
-});
+})

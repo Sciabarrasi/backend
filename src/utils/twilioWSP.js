@@ -1,12 +1,14 @@
-const logger = require('../config/logger');
-const accountSid = process.env.TWILIO_AccSID;
-const authToken = process.env.TWILIO_WSP;
-const client = require('twilio')(accountSid, authToken);
+import logger from '../config/logger.js';
+import TwilioSDK from 'twilio';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const accountSid = process.env.TWILIO_AccSID;
+const authToken = process.env.TWILIO_WSP;
+const client = TwilioSDK(accountSid, authToken)
+
 const twilioWSP = (user) => {
-    const ADMIN = process.env.TWILIO_ADMIN_WSP
+    const ADMIN = process.env.TWILIO_ADMINnum
     if (user?.telefono) {
         client.messages
             .create({
@@ -24,4 +26,5 @@ const twilioWSP = (user) => {
             .then(message => logger.info(message.sid))
     }
 }
-module.exports = twilioWSP
+
+export default twilioWSP

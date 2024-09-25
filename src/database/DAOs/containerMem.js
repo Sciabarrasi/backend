@@ -1,4 +1,4 @@
-const logger = require('../../config/logger');
+import logger from '../../config/logger.js';
 
 class ContainerMem {
     constructor(coll) {
@@ -10,33 +10,31 @@ class ContainerMem {
 
     getAll() {
         try {
-            let res = undefined;
             if (this.coll == "products") {
-                res = this.products;
+                return this.products;
             } else if (this.coll == "messages") {
-                res = this.messages;
+                return this.messages;
             } else if (this.coll == "users") {
-                res = this.users;
+                return this.users;
             };
-            return res;
         } catch (e) {
             logger.error(e);
         };
     };
+
     save(item) {
         try {
-            let res = undefined;
             const id = (arr, item) => {
                 const id = arr.length === 0 ? 1 : arr[arr.length - 1].id + 1;
                 item.id = id;
                 return item
             }
             if (this.coll == "products") {
-                res = this.products.push(id(this.products, item));
+                return this.products.push(id(this.products, item));
             } else if (this.coll == "messages") {
-                res = this.messages.push(id(this.messages, item));
+                return this.messages.push(id(this.messages, item));
             } else if (this.coll == "users") {
-                res = this.users.push(id(this.users, item))
+                return this.users.push(id(this.users, item))
             };
         } catch (e) {
             logger.error(e);
@@ -45,13 +43,11 @@ class ContainerMem {
 
     getById(id) {
         try {
-            let res = undefined
             if (this.coll == "products") {
-                res = this.products.find(({ prod }) => prod.id === id);
+                return this.products.find(({ prod }) => prod.id === id);
             } else if (this.coll == "messages") {
-                res = this.messages.find(({ msg }) => msg.id === id);
+                return this.messages.find(({ msg }) => msg.id === id);
             };
-            return res;
         } catch (e) {
             logger.error(e);
         };
@@ -59,8 +55,14 @@ class ContainerMem {
 
     getByTitle(title) {
         try {
-            const res = this.products.find(({ prod }) => prod.title === title);
-            return res;
+            return this.products.find(({ prod }) => prod.title === title);
+        } catch (e) {
+            logger.error(e);
+        };
+    };
+    getByCategory(category) {
+        try {
+            return this.products.find(({ prod }) => prod.category === category);
         } catch (e) {
             logger.error(e);
         };
@@ -68,8 +70,7 @@ class ContainerMem {
 
     getByEmail(email) {
         try {
-            const res = this.users.find(({ user }) => user.email === email);
-            return res;
+            return this.users.find(({ user }) => user.email === email);
         } catch (e) {
             logger.error(e);
         };
@@ -126,3 +127,5 @@ class ContainerMem {
         }
     };
 };
+
+export default ContainerMem;

@@ -1,7 +1,7 @@
-const ContainerMem = require('./containerMem');
+import ContainerMem from './containerMem.js';
 const prods = new ContainerMem('products')
 const users = new ContainerMem('users')
-const logger = require('../../config/logger');
+import logger from '../../config/logger.js';
 
 class CartMem {
 
@@ -17,6 +17,7 @@ class CartMem {
 
     async findProdById(id) {
         try {
+            const prod = prods.getById(id);
             return prod;
         } catch (error) {
             logger.error(error);
@@ -35,3 +36,5 @@ class CartMem {
     }
 
 }
+
+export default CartMem;

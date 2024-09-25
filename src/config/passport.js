@@ -1,19 +1,21 @@
-const LocalStrategy = require('passport-local').Strategy;
-const Users = require('../models/users');
-const bcrypt = require('bcrypt');
-const mailer = require('../utils/nodemailer');
-const logger = require('./logger');
+import { Strategy as LocalStrategy } from "passport-local";
+import Users from '../database/models/users.js'
+import bcrypt from 'bcrypt'
+import mailer from '../utils/nodemailer.js';
+import logger from './logger.js';
 
-module.exports = (passport) => {
+const passportConfig = (passport) => {
     function createHash(password) {
         return bcrypt.hashSync(
             password,
             bcrypt.genSaltSync(10),
             null);
     }
+
     function isValidPassword(user, password) {
         return bcrypt.compareSync(password, user.password);
     }
+
     passport.use('login', new LocalStrategy(
         {
             usernameField: "email",
@@ -21,20 +23,25 @@ module.exports = (passport) => {
         },
         (email, password, done) => {
             Users.findOne({ email: email }, (err, user) => {
+
                 if (err)
                     return done(err);
+
                 if (!user) {
                     logger.error('User Not Found with email ' + email);
                     return done(null, false);
                 }
+
                 if (!isValidPassword(user, password)) {
                     logger.error('Invalid password');
                     return done(null, false);
                 }
+
                 return done(null, user);
             });
         })
     );
+
     passport.use('signup', new LocalStrategy(
         {
             passReqToCallback: true,
@@ -50,10 +57,12 @@ module.exports = (passport) => {
                             logger.error('Error in SignUp: ' + err);
                             return done(err);
                         }
+
                         if (user) {
                             logger.error('User already exists');
                             return done(null, false)
                         }
+
                         const newUser = {
                             email: email,
                             password: createHash(password),
@@ -63,6 +72,7 @@ module.exports = (passport) => {
                             telefono: '+' + `${req.body.countryCode}` + `${req.body.phone}`,
                             avatar: req.file
                         };
+
                         Users.create(newUser, (err, userWithId) => {
                             if (err) {
                                 logger.error('Error in Saving user: ' + err);
@@ -72,6 +82,7 @@ module.exports = (passport) => {
                             logger.error('User Registration succesful');
                             return done(null, userWithId);
                         });
+
                     } else {
                         return done(null, false)
                     }
@@ -82,10 +93,13 @@ module.exports = (passport) => {
             });
         })
     )
+
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
+
     passport.deserializeUser((id, done) => {
         Users.findById(id, done);
     });
 };
+export default passportConfig;

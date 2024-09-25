@@ -1,5 +1,5 @@
-const { createTransport } = require('nodemailer');
-const logger = require('../config/logger');
+import { createTransport } from 'nodemailer';
+import logger from '../config/logger.js';
 
 const mailer = (user, data, to) => {
     const ADMIN_MAIL = process.env.NODEMAILER_ADMIN
@@ -11,6 +11,7 @@ const mailer = (user, data, to) => {
             pass: process.env.NODEMAILER_PASS
         }
     });
+
     let TO = null
     if (to === 'signupMail') {
         const signupMail = {
@@ -32,6 +33,7 @@ const mailer = (user, data, to) => {
         }
         TO = checkoutMail
     }
+
     transporter.sendMail(TO, function (error, info) {
         if (error) {
             logger.error(error);
@@ -40,4 +42,5 @@ const mailer = (user, data, to) => {
         }
     });
 }
-module.exports = mailer
+
+export default mailer
