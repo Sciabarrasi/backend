@@ -6,9 +6,13 @@ const session = require('express-session');
 const compression = require('compression');
 const app = express();
 const server = require("http").createServer(app);
+
+
 server.listen(config.PORT, () => {
     console.log(`Server: http://localhost:${config.PORT}`);
 });
+
+
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,23 +21,36 @@ app.set('view engine', 'ejs');
 
 //DB
 const MongoStore = require('connect-mongo');
-require('./src/utils/mongoConnect');
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: config.MONGO_CONNECTION,
-        mongoOptions: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        },
-    }),
-    secret: config.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 600000 //10 mins
-    }
-})
-);
+const { connectMG } = require('./src/utils/mongoConnect');
+connectMG()
+if (process.env.PERSISTENCY === 'mongo') {
+    app.use(session({
+        store: MongoStore.create({
+            mongoUrl: config.MONGO_CONNECTION,
+            mongoOptions: {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            },
+        }),
+        secret: config.SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 600000 //10 mins
+        }
+    })
+    );
+} else if (process.env.PERSISTENCY === 'mem') {
+    app.use(session({
+        secret: config.SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 600000 //10 mins
+        }
+    })
+    );
+}
 
 //PASSPORT
 const passport = require('passport');
@@ -43,8 +60,13 @@ app.use(passport.session());
 
 //SOCKET
 const io = require("socket.io")(server);
-const { prods, msgs } = require('./database/container');
-const { normalize, schema } = require('normalizr');
+const ContainerFactory = require('./src/database/DAOs/containerFactory');
+const a = new ContainerFactory();
+const b = new ContainerFactory();
+console.log('Son misma instancia: ', a === b);
+const prods = ContainerFactory.get('products', process.env.PERSISTENCY)
+const msgs = ContainerFactory.get('messages', process.env.PERSISTENCY)
+const { normalize, schema } = require('normalizr')
 
 io.on("connection", async (socket) => {
     try {
@@ -58,6 +80,7 @@ io.on("connection", async (socket) => {
         };
         io.sockets.emit("arr-producto", await prods.getAll());
         io.sockets.emit("arr-chat", (await normalizr()).entities.chats.undefined);
+
         socket.on("data-productos", async (data) => {
             await prods.save(data);
             io.sockets.emit("arr-producto", await prods.getAll());
@@ -73,20 +96,20 @@ io.on("connection", async (socket) => {
 
 
 //ROUTES
-const routerCart = require('./routes/cart');
-const routerCheckout = require('./routes/checkout');
-const routerInfo = require('./routes/info');
-const routerInorganics = require('./routes/inorganics');
-const routerLogin = require('./routes/login');
-const routerLogout = require('./routes/logout');
-const routerNotFound = require('./routes/notFound');
-const routerOrganics = require('./routes/organics');
-const routerProd = require('./routes/prod');
-const routerProfile = require('./routes/profile');
-const routerRandoms = require('./routes/randoms');
-const routerRoot = require('./routes/root');
-const routerSignup = require('./routes/signup');
-const routerTest = require('./routes/test');
+const routerCart = require('./src/routes/cart');
+const routerCheckout = require('./src/routes/checkout');
+const routerInfo = require('./src/routes/info');
+const routerInorganics = require('./src/routes/inorganics');
+const routerLogin = require('./src/routes/login');
+const routerLogout = require('./src/routes/logout');
+const routerNotFound = require('./src/routes/notFound');
+const routerOrganics = require('./src/routes/organics');
+const routerProd = require('./src/routes/prod');
+const routerProfile = require('./src/routes/profile');
+const routerRandoms = require('./src/routes/randoms');
+const routerRoot = require('./src/routes/root');
+const routerSignup = require('./src/routes/signup');
+const routerTest = require('./src/routes/test');
 
 app.use('/cart', routerCart)
 app.use('/checkout', routerCheckout)
@@ -101,5 +124,3 @@ app.use('/api/randoms', routerRandoms)
 app.use('/', routerRoot)
 app.use('/signup', routerSignup)
 app.use('/api/productosTest', routerTest)
-
-app.use('*', routerNotFound)
