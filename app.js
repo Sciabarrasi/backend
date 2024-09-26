@@ -27,12 +27,15 @@ import routerRoot from './src/routes/root.js';
 import routerSignup from './src/routes/signup.js';
 import routerTest from './src/routes/test.js';
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+
 class ExpressServer {
     constructor() {
         this.app = express();
         this.server = http.createServer(this.app)
         this.ioServer = new ioServer(this.server)
     }
+
     middlewares = () => {
         this.app.use(cors())
         this.app.use(compression());
@@ -69,15 +72,19 @@ class ExpressServer {
         this.app.use(passport.initialize());
         this.app.use(passport.session());
     }
+
     database = () => {
         connectMG();
     }
+
     passport = () => {
         passportConfig(passport)
     }
+
     socket = () => {
         socket(this.ioServer)
     }
+
     routes = () => {
         this.app.use('/cart', routerCart)
         this.app.use('/checkout', routerCheckout)
@@ -86,7 +93,7 @@ class ExpressServer {
         this.app.use('/login', routerLogin)
         this.app.use('/logout', routerLogout)
         this.app.use('/organics', routerOrganics)
-        this.app.use('/prod', routerProd)
+        this.app.use('/prods', routerProd)
         this.app.use('/profile', routerProfile)
         this.app.use('/api/randoms', routerRandoms)
         this.app.use('/', routerRoot)
@@ -94,6 +101,7 @@ class ExpressServer {
         this.app.use('/api/productosTest', routerTest)
         this.app.use('*', routerNotFound)
     }
+
     listen = () => {
         this.middlewares()
         this.database()
@@ -105,5 +113,6 @@ class ExpressServer {
         });
     }
 }
+
 const expressServer = new ExpressServer();
 export default expressServer;

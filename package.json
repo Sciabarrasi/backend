@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "mocha ./src/test/test.js",
-    "start": "0x server.js"
+    "start": "0x server.js",
+    "mongo": "set PERSISTENCY=mongo&& nodemon server.js",
+    "mem": "set PERSISTENCY=mem&& nodemon server.js"
   },
   "keywords": [],
   "author": "",
