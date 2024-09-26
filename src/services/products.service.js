@@ -1,5 +1,6 @@
-import ContainerFactory from '../database/DAOs/containerFactory.js'
 import { PERSISTENCE } from '#config/config.js'
+import ContainerFactory from '#database/DAOs/ContainerFactory.js'
+
 class ProductsService {
   constructor () {
     this.productsDao = ContainerFactory.get('products', PERSISTENCE)

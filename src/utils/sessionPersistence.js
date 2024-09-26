@@ -1,5 +1,6 @@
-import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import session from 'express-session'
+
 const sessionPersistence = (app) => {
   if (process.env.PERSISTENCE === 'mongo') {
     return (
@@ -21,7 +22,7 @@ const sessionPersistence = (app) => {
     )
   } else if (process.env.PERSISTENCE === 'mem') {
     return (
-      this.app.use(session({
+      app.use(session({
         secret: process.env.SECRET,
         resave: false,
         saveUninitialized: false,
@@ -32,4 +33,5 @@ const sessionPersistence = (app) => {
     )
   }
 }
+
 export default sessionPersistence

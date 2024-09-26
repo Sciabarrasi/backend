@@ -1,6 +1,6 @@
-import Productucts from '../models/products.js'
-import Messages from '../models/messages.js'
-import Users from '../models/users.js'
+import Messages from '../models/messages.model.js'
+import Products from '../models/products.model.js'
+import Users from '../models/user.model.js'
 
 class ContainerMongo {
   constructor (coll) {
@@ -9,7 +9,7 @@ class ContainerMongo {
 
   async getAll () {
     if (this.coll === 'products') {
-      return await Productucts.find({})
+      return await Products.find({})
     } else if (this.coll === 'messages') {
       return await Messages.find({})
     } else if (this.coll === 'users') {
@@ -19,31 +19,34 @@ class ContainerMongo {
 
   async save (item) {
     if (this.coll === 'products') {
-      const res = new Productucts(item)
-      await res.save()
+      const res = new Products(item)
+      const saved = await res.save()
+      return saved
     } else if (this.coll === 'messages') {
       const res = new Messages(item)
-      await res.save()
+      const saved = await res.save()
+      return saved
     } else if (this.coll === 'users') {
       const res = new Users(item)
-      await res.save()
+      const saved = await res.save()
+      return saved
     }
   }
 
   async getById (id) {
     if (this.coll === 'products') {
-      return await Productucts.findById(id)
+      return await Products.findById(id)
     } else if (this.coll === 'messages') {
       return await Messages.findById(id)
     }
   }
 
   async getByTitle (title) {
-    return await Productucts.findOne({ title }).exec()
+    return await Products.findOne({ title }).exec()
   }
 
   async getByCategory (category) {
-    return await Productucts.findOne({ category }).exec()
+    return await Products.findOne({ category }).exec()
   }
 
   async getByEmail (email) {
@@ -52,7 +55,7 @@ class ContainerMongo {
 
   async deleteById (id) {
     if (this.coll === 'products') {
-      await Productucts.deleteOne({ _id: id })
+      await Products.deleteOne({ _id: id })
     } else if (this.coll === 'messages') {
       await Messages.deleteOne({ _id: id })
     } else if (this.coll === 'users') {
@@ -62,7 +65,7 @@ class ContainerMongo {
 
   async deleteAll () {
     if (this.coll === 'products') {
-      await Productucts.deleteMany({})
+      await Products.deleteMany({})
     } else if (this.coll === 'messages') {
       await Messages.deleteMany({})
     } else if (this.coll === 'users') {
@@ -71,7 +74,7 @@ class ContainerMongo {
   }
 
   async updateById (id, title, price, thumbnail) {
-    await Productucts.findByIdAndUpdate(
+    await Products.findByIdAndUpdate(
       id,
       {
         title,
