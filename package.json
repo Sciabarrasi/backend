@@ -5,10 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha ./src/test/test.js",
-    "start": "0x server.js",
-    "mongo": "set PERSISTENCY=mongo&& nodemon server.js",
-    "mem": "set PERSISTENCY=mem&& nodemon server.js"
+    "prod": "set NODE_ENV=production&& set PERSISTENCE=mem&& nodemon server.js",
+    "mem": "set NODE_ENV=development&& set PERSISTENCE=mongo& nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +18,6 @@
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.4.5",
-    "ejs": "^3.1.8",
     "express": "^4.19.2",
     "express-session": "^1.17.3",
     "mongoose": "^6.8.1",
@@ -29,9 +26,7 @@
     "normalizr": "^3.6.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "socket.io": "^4.5.3",
-    "winston": "^3.8.2",
-    "yargs": "^17.6.2"
+    "socket.io": "^4.5.3"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.2",
@@ -39,6 +34,35 @@
     "faker": "^5.5.3",
     "mocha": "^10.7.3",
     "nodemon": "^3.1.7",
+    "standard": "^17.1.2",
     "supertest": "^7.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/standard/eslintrc.json"
+    ]
+  },
+  "imports":{
+    "#utils/*":{
+      "default": "./src/utils/*"
+    },
+    "#config/*":{
+      "default": "./src/config/*"
+    },
+    "#middleware/*":{
+      "default": "./src/middleware/*"
+    },
+    "#routes/*":{
+      "default": "./src/routes"
+    },
+    "#controllers/*": {
+      "default": "./src/routes/*"
+    },
+    "#services/*":{
+      "default": "./src/services/*"
+    },
+    "#database/*":{
+      "default": "./src/database/*"
+    }
   }
 }
