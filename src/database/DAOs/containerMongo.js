@@ -41,16 +41,8 @@ class ContainerMongo {
     }
   }
 
-  async getByTitle (title) {
-    return await Products.findOne({ title }).exec()
-  }
-
   async getByCategory (category) {
-    return await Products.findOne({ category }).exec()
-  }
-
-  async getByEmail (email) {
-    return await Users.findOne({ email }).exec()
+    return await Products.find({ category }).exec()
   }
 
   async deleteById (id) {
@@ -73,13 +65,11 @@ class ContainerMongo {
     }
   }
 
-  async updateById (id, title, price, thumbnail) {
+  async updateById (id, title, description, features, thumbnail, category, price, stock) {
     await Products.findByIdAndUpdate(
       id,
       {
-        title,
-        price,
-        thumbnail
+        title, description, features, thumbnail, category, price, stock
       }
     )
   }
