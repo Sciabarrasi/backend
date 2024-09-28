@@ -1,4 +1,4 @@
-import signupService from '../services/signup.service.js'
+import signupService from '#services/signup.service.js'
 
 class SignupController {
   getSignupController = (req, res) => {

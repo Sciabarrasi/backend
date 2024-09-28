@@ -46,4 +46,5 @@ class ExpressServer {
 }
 
 const expressServer = new ExpressServer()
+
 export default expressServer

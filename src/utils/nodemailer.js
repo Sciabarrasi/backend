@@ -1,13 +1,13 @@
 import { createTransport } from 'nodemailer'
 
 const mailer = (user, data, to) => {
-  const ADMIN_MAIL = process.env.ADMIN_MAIL
+  const ADMIN_MAIL = process.env.NODEMAILER_ADMIN
 
   const transporter = createTransport({
     service: 'gmail',
     auth: {
       user: ADMIN_MAIL,
-      pass: process.env.ADMIN_PASS
+      pass: process.env.NODEMAILER_PASS
     }
   })
 

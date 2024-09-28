@@ -15,12 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -63,10 +63,10 @@
       "default": "./src/middlewares/*"
     },
     "#routes/*": {
-      "default": "./src/routes"
+      "default": "./src/routes/*"
     },
     "#controllers/*": {
-      "default": "./src/routes/*"
+      "default": "./src/controllers/*"
     },
     "#services/*": {
       "default": "./src/services/*"

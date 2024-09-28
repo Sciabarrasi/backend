@@ -1,6 +1,6 @@
 import Messages from '../models/messages.model.js'
-import Products from '../models/products.model.js'
-import Users from '../models/user.model.js'
+import Productucts from '../models/products.model.js'
+import Users from '../models/users.model.js'
 
 class ContainerMongo {
   constructor (coll) {
@@ -9,7 +9,7 @@ class ContainerMongo {
 
   async getAll () {
     if (this.coll === 'products') {
-      return await Products.find({})
+      return await Productucts.find({})
     } else if (this.coll === 'messages') {
       return await Messages.find({})
     } else if (this.coll === 'users') {
@@ -19,7 +19,7 @@ class ContainerMongo {
 
   async save (item) {
     if (this.coll === 'products') {
-      const res = new Products(item)
+      const res = new Productucts(item)
       const saved = await res.save()
       return saved
     } else if (this.coll === 'messages') {
@@ -35,19 +35,19 @@ class ContainerMongo {
 
   async getById (id) {
     if (this.coll === 'products') {
-      return await Products.findById(id)
+      return await Productucts.findById(id)
     } else if (this.coll === 'messages') {
       return await Messages.findById(id)
     }
   }
 
   async getByCategory (category) {
-    return await Products.find({ category }).exec()
+    return await Productucts.find({ category }).exec()
   }
 
   async deleteById (id) {
     if (this.coll === 'products') {
-      await Products.deleteOne({ _id: id })
+      await Productucts.deleteOne({ _id: id })
     } else if (this.coll === 'messages') {
       await Messages.deleteOne({ _id: id })
     } else if (this.coll === 'users') {
@@ -57,7 +57,7 @@ class ContainerMongo {
 
   async deleteAll () {
     if (this.coll === 'products') {
-      await Products.deleteMany({})
+      await Productucts.deleteMany({})
     } else if (this.coll === 'messages') {
       await Messages.deleteMany({})
     } else if (this.coll === 'users') {
@@ -66,7 +66,7 @@ class ContainerMongo {
   }
 
   async updateById (id, title, description, features, thumbnail, category, price, stock) {
-    await Products.findByIdAndUpdate(
+    await Productucts.findByIdAndUpdate(
       id,
       {
         title, description, features, thumbnail, category, price, stock

@@ -1,6 +1,5 @@
-import ContainerFactory from '#database/DAOs/ContainerFactory.js'
 import config from '#config/config.js'
-
+import ContainerFactory from '#database/DAOs/containerFactory.js'
 const msgs = ContainerFactory.get('messages', config.persistence)
 
 const socket = (io) => {

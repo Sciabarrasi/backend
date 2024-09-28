@@ -1,9 +1,10 @@
-import CryptoJS from 'crypto-js'
 import config from '#config/config.js'
+import CryptoJS from 'crypto-js'
 import sessionMem from './sessionMem.js'
 import sessionMongo from './sessionMongo.js'
 
 config.secret = generateSecretKey()
+
 setInterval(() => {
   config.secret = generateSecretKey()
 }, 600000)

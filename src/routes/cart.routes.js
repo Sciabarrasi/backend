@@ -1,4 +1,4 @@
-import cartController from '#controllers.cart.controller.js'
+import cartController from '#controllers/cart.controller.js'
 import auth from '#middlewares/auth.middleware.js'
 import { Router } from 'express'
 

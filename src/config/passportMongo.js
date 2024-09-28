@@ -9,9 +9,11 @@ const passportMongo = (passport, LocalStrategy) => {
       bcrypt.genSaltSync(10),
       null)
   }
+
   function isValidPassword (user, password) {
     return bcrypt.compareSync(password, user.password)
   }
+
   passport.use('login', new LocalStrategy(
     {
       usernameField: 'email',
@@ -20,16 +22,20 @@ const passportMongo = (passport, LocalStrategy) => {
     (email, password, done) => {
       Users.findOne({ email }, (err, user) => {
         if (err) return done(err)
+
         if (!user) {
           return done(null, false)
         }
+
         if (!isValidPassword(user, password)) {
           return done(null, false)
         }
+
         return done(null, user)
       })
     })
   )
+
   passport.use('signup', new LocalStrategy(
     {
       passReqToCallback: true,
@@ -44,9 +50,11 @@ const passportMongo = (passport, LocalStrategy) => {
             if (err) {
               return done(err)
             }
+
             if (user) {
               return done(null, false)
             }
+
             const newUser = {
               email,
               password: createHash(password),
@@ -56,6 +64,7 @@ const passportMongo = (passport, LocalStrategy) => {
               telefono: '+' + `${req.body.countryCode}` + `${req.body.phone}`,
               avatar: req.file
             }
+
             Users.create(newUser, (err, userWithId) => {
               if (err) {
                 return done(err)
@@ -72,9 +81,11 @@ const passportMongo = (passport, LocalStrategy) => {
       })
     })
   )
+
   passport.serializeUser((user, done) => {
     done(null, user._id)
   })
+
   passport.deserializeUser((id, done) => {
     Users.findById(id, done)
   })

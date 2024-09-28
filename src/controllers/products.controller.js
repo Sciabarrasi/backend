@@ -44,5 +44,7 @@ class ProductsController {
     res.json({ success: 'Todos los productos borrados' })
   }
 }
+
 const productsController = new ProductsController()
+
 export default productsController

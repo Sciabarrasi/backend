@@ -1,4 +1,4 @@
-import loginService from '../services/login.service.js'
+import loginService from '#services/login.service.js'
 
 class LoginController {
   getLoginController = (req, res) => {
@@ -21,4 +21,5 @@ class LoginController {
 }
 
 const loginController = new LoginController()
+
 export default loginController

@@ -4,6 +4,7 @@ class ProfileController {
     res.render('pages/profile', { user })
   }
 }
+
 const profileController = new ProfileController()
 
 export default profileController

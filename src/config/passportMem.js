@@ -10,9 +10,11 @@ const passportMem = (passport, LocalStrategy) => {
       bcrypt.genSaltSync(10),
       null)
   }
+
   function isValidPassword (user, password) {
     return bcrypt.compareSync(password, user.password)
   }
+
   passport.use('login', new LocalStrategy(
     {
       usernameField: 'email',
@@ -29,6 +31,7 @@ const passportMem = (passport, LocalStrategy) => {
       return done(null, user)
     })
   )
+
   passport.use('signup', new LocalStrategy(
     {
       passReqToCallback: true,
@@ -63,9 +66,11 @@ const passportMem = (passport, LocalStrategy) => {
       }
     })
   )
+
   passport.serializeUser((user, done) => {
     done(null, user.email)
   })
+
   passport.deserializeUser((email, done) => {
     const user = users.find(user => user.email === email)
     done(null, user)

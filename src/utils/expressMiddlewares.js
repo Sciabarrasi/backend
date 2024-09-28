@@ -5,7 +5,7 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import sessionPersistence from './sessionPersistence.js'
 
-const __dirname = dirname(dirname(fileURLToPath(import.meta.url)))
+const __dirname = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
 
 const expressMiddlewares = (app, express) => {
   app.use(cors())

@@ -1,4 +1,4 @@
-import cartService from '../services/cart.service.js'
+import cartService from '#services/cart.service.js'
 
 class CartController {
   deleteCartController = async (req, res) => {
@@ -10,8 +10,8 @@ class CartController {
   deleteCartProdController = async (req, res) => {
     const user = req.user
     const id = req.params.id
-    await cartService.findProductUpdateCart(id, user)
-    res.status(200).json({ success: 'Cart updated' })
+    await cartService.deleteCartProd(user, id)
+    res.redirect('/cart')
   }
 
   addToCartController = async (req, res) => {

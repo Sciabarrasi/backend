@@ -1,5 +1,5 @@
 import config from '#config/config.js'
-import ContainerFactory from '#database/DAOs/ContainerFactory.js'
+import ContainerFactory from '#database/DAOs/containerFactory.js'
 
 class ProductsService {
   constructor () {
@@ -34,7 +34,6 @@ class ProductsService {
     return await this.productsDao.deleteAll()
   }
 }
-
 const productsService = new ProductsService()
 
 export default productsService
